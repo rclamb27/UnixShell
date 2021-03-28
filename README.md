@@ -5,7 +5,7 @@ Project 2 fof 351 CPSC
 ```
 > $ begin compile 
 ```
-![](/picture/!!begincompile.png)
+![](/picture/begincompile.png)
 ```
 > $ ls and !! and cat 
 ```
