@@ -17,7 +17,7 @@ Project 2 fof 351 CPSC
 ```
 > $ cal 2000 and ls < text.txt > output.txt
 ```
-![](/picture/CalendederOutput.png)
+![](/picture/CalendederOuput.png)
 ```
 > $ less -l -s | less
 ```
