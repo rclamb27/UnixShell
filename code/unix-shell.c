@@ -60,6 +60,19 @@ char** tokparse(char* input, char* cargs[])
     return read;
 }
 
+int find_pipe(char** cargs){
+    int i = 0;
+    while(cargs[i] != '\0')
+    {
+        if(!strncmp(cargs[i], "|", 1))
+        {
+            return i;
+        }
+        ++i;
+    }
+    return -1;
+}
+
 int main(int argc, const char* argv[])
 {
     char input [BUFSIZ];
@@ -138,8 +151,8 @@ int main(int argc, const char* argv[])
             else if(!strncmp(redirect[0], "p", 1))
             {
                 pid_t pidc;
-                int pipe_rhs_offset = find_pipe(cargs);
-                cargs[pipe_rhs_offset] = "\0";
+                int offset = find_pipe(cargs);
+                cargs[offset] = "\0";
                 int e = pipe(pfd);
                 if(e < 0)
                 {
@@ -152,13 +165,13 @@ int main(int argc, const char* argv[])
                 memset(lhs, 0, BUFSIZ*sizeof(char));
                 memset(rhs, 0, BUFSIZ*sizeof(char));
 
-                for(int x = 0; x < pipe_rhs_offset; ++x)
+                for(int x = 0; x < offset; ++x)
                 {
                     lhs[x] = cargs[x];
                 }
                 for(int x = 0; x < BUFSIZ; ++x)
                 {
-                    int idx = x + pipe_rhs_offset + 1;
+                    int idx = x + offset + 1;
                     if(cargs[idx] == 0) break;
                     rhs[x] = cargs[idx];
                 }
@@ -192,16 +205,3 @@ int main(int argc, const char* argv[])
     return 0;
 }
 
-
-int find_pipe(char** cargs){
-    int i = 0;
-    while(cargs[i] != '\0')
-    {
-        if(!strncmp(cargs[i], "|", 1))
-        {
-            return i;
-        }
-        ++i;
-    }
-    return -1;
-}
